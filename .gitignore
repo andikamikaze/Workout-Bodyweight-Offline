@@ -1,0 +1,96 @@
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# --- pnpm / npm / yarn ---
+node_modules/
+.pnpm-store/
+.pnpm-debug.log
+package-lock.json
+yarn.lock
+yarn-error.log
+npm-debug.log
+npm-debug.*.log
+testem.log
+
+# --- TypeScript / build output ---
+dist/
+build/
+out-tsc/
+tmp/
+*.tsbuildinfo
+*.orig.*
+
+# --- Expo / React Native (artifacts/bodyweight-workout) ---
+.expo/
+.expo-shared/
+web-build/
+expo-env.d.ts
+.metro-health-check*
+ios/
+android/
+
+# --- Native signing / secrets ---
+*.jks
+*.p8
+*.p12
+*.key
+*.pem
+*.mobileprovision
+
+# --- Vite / web ---
+.vite/
+*.local
+
+# --- Env files ---
+.env
+.env*.local
+.env.*.local
+
+# --- Drizzle / DB ---
+drizzle/*.sql
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+
+# --- Logs / debug ---
+logs/
+*.log
+libpeerconnection.log
+coverage/
+/typings/
+
+# --- OS / System ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- IDEs and editors ---
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# --- Misc ---
+.sass-cache/
+connect.lock
+.opencode/
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+# --- Replit ---
+.cache/
+.local/
+.replit
+.replit.nix
+config.toml
+
+# --- Vercel / deploy ---
+.vercel/

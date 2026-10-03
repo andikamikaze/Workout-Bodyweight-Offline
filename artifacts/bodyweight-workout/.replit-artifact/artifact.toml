@@ -1,0 +1,24 @@
+kind = "mobile"
+previewPath = "/"
+title = "Bodyweight Workout"
+description = "A private, offline-first Indonesian bodyweight fitness planner for building personalized sessions, guiding workouts, and tracking progress without accounts or network access."
+version = "1.0.0"
+id = "artifacts/bodyweight-workout"
+router = "expo-domain"
+
+[[services]]
+name = "expo"
+ensurePreviewReachable = "/status"
+paths = [ "/" ]
+localPort = 23521
+
+[services.development]
+run = "pnpm --filter @workspace/bodyweight-workout run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/bodyweight-workout", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/bodyweight-workout", "run", "serve" ]
+
+[services.env]
+PORT = "23521"
+BASE_PATH = "/"

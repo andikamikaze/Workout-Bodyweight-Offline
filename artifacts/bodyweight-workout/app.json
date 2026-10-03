@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "Gerak",
+    "slug": "aplikasi-workout-fitness-plan",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/bodyweight-icon.png",
+    "scheme": "bodyweight-workout",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#F3F5EE"
+    },
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "com.wildanaesteam.aplikasiworkoutfitnessplan",
+      "permissions": [
+        "POST_NOTIFICATIONS",
+        "FOREGROUND_SERVICE",
+        "VIBRATE",
+        "WAKE_LOCK",
+        "RECEIVE_BOOT_COMPLETED"
+      ],
+      "foregroundServiceType": "mediaPlayback",
+      "package": "com.wildanaesteam.aplikasiworkoutfitnessplan"
+    },
+    "web": {
+      "favicon": "./assets/images/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sharing",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#1E5B3A"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1173ccf3-524b-4c5a-bc7b-fa8cf7f960d3"
+      }
+    }
+  }
+}
