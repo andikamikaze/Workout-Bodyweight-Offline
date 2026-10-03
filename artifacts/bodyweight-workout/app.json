@@ -4,17 +4,24 @@
     "slug": "aplikasi-workout-fitness-plan",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/bodyweight-icon.png",
+    "icon": "./assets/images/appstore.png",
     "scheme": "bodyweight-workout",
     "userInterfaceStyle": "automatic",
+    "jsEngine": "hermes",
     "splash": {
-      "backgroundColor": "#F3F5EE"
+      "image": "./assets/images/appstore.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#DEE9BA"
     },
     "ios": {
       "supportsTablet": false
     },
     "android": {
       "package": "com.wildanaesteam.aplikasiworkoutfitnessplan",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-foreground.png",
+        "backgroundColor": "#DEE9BA"
+      },
       "permissions": [
         "POST_NOTIFICATIONS",
         "FOREGROUND_SERVICE",
@@ -22,19 +29,27 @@
         "WAKE_LOCK",
         "RECEIVE_BOOT_COMPLETED"
       ],
-      "foregroundServiceType": "mediaPlayback",
-      "package": "com.wildanaesteam.aplikasiworkoutfitnessplan"
+      "foregroundServiceType": "mediaPlayback"
     },
     "web": {
-      "favicon": "./assets/images/icon.png"
+      "favicon": "./assets/images/appstore.png"
     },
     "plugins": [
       "expo-router",
       "expo-sharing",
       [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
+          }
+        }
+      ],
+      [
         "expo-notifications",
         {
-          "icon": "./assets/images/icon.png",
+          "icon": "./assets/images/notification-icon.png",
           "color": "#1E5B3A"
         }
       ]

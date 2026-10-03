@@ -77,12 +77,17 @@ Runtime configuration lives in `app.json` and in-app Settings:
 pnpm exec expo start          # start Metro, then press a / i / w in the terminal
 ```
 
-Build and serve the app bundle used for web preview:
-
-```bash
-pnpm run build                # node scripts/build.js — bundles the app
-pnpm run serve                # node server/serve.js — serves the built bundle
-```
+> `pnpm run build` / `pnpm run serve` are **Replit-only**, not for local or EAS Cloud builds.
+> `pnpm run build` runs `node scripts/build.js`, which builds a static Expo Go
+> deployment and requires one of `REPLIT_INTERNAL_APP_DOMAIN`,
+> `REPLIT_DEV_DOMAIN`, or `EXPO_PUBLIC_DOMAIN` (see `getDeploymentDomain()`).
+> Running it locally without those vars fails with:
+>
+> ```text
+> ERROR: No deployment domain found. Set REPLIT_INTERNAL_APP_DOMAIN, REPLIT_DEV_DOMAIN, or EXPO_PUBLIC_DOMAIN
+> ```
+>
+> For local dev use `pnpm exec expo start`. For installable binaries use EAS Build below.
 
 ### Usage
 
@@ -178,13 +183,43 @@ Until a test runner is added, verify changes manually:
 
 ## Deployment
 
-Android builds go through EAS Build (config in `artifacts/bodyweight-workout/eas.json`):
+Android builds go through EAS Cloud (config in `artifacts/bodyweight-workout/eas.json`).
+Always run EAS commands from `artifacts/bodyweight-workout` (not the repo root),
+because the full `app.json` / `eas.json` live there. Do **not** use `pnpm run build`
+for EAS — that script is Replit-only (see above).
+
+Profiles:
+
+| Profile      | Output | Use for                        |
+| ------------ | ------ | ------------------------------ |
+| `preview`    | APK    | Internal QA, direct install    |
+| `production` | AAB    | Play Store upload via `submit` |
+
+`preview` sets `android.buildType: apk` so the artifact can be installed directly.
+`production` uses `autoIncrement` and `appVersionSource: remote`.
+
+### Build APK internal (recommended for QA)
+
+Prerequisites: Node.js 20+, pnpm `10.33.2`, `npm i -g eas-cli` (`>= 24.10.0`),
+`eas login` as owner of EAS project `1173ccf3-524b-4c5a-bc7b-fa8cf7f960d3`.
 
 ```bash
 cd artifacts/bodyweight-workout
-eas login
+eas whoami
+eas project:info
+pnpm exec expo doctor
+pnpm run typecheck
+eas build --platform android --profile preview
+```
+
+Open the `expo.dev` build link from the CLI, download the APK, and install it on
+Android 8.0 (API 26) or newer.
+
+### Build AAB for Play Store
+
+```bash
+cd artifacts/bodyweight-workout
 eas build --platform android --profile production   # AAB for Play Store
-eas build --platform android --profile preview      # internal APK for QA
 eas submit --platform android --profile production
 ```
 
