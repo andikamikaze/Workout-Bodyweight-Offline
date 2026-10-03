@@ -1,24 +1,17 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Svg, { Circle, Ellipse, Line, Path } from 'react-native-svg';
-import { useColors } from '@/hooks/useColors';
-import { ANATOMY_MAPS, ANATOMY_VIEWBOX } from '@/src/data/anatomyMaps';
-import { MUSCLES } from '@/src/data/muscles';
-import { tx } from '@/src/i18n';
-import { MuscleId } from '@/src/types';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import Svg, { Circle, Line, Path } from "react-native-svg";
+import { useColors } from "@/hooks/useColors";
+import { ANATOMY_MAPS, ANATOMY_VIEWBOX } from "@/src/data/anatomyMaps";
+import { MUSCLES } from "@/src/data/muscles";
+import { tx } from "@/src/i18n";
+import { svgA11yProps, svgTapProps } from "./svgPress";
+import { MuscleId } from "@/src/types";
 
-export type AnatomyGender = 'male' | 'female';
-export type AnatomySide = 'front' | 'back';
+export type AnatomyGender = "male" | "female";
+export type AnatomySide = "front" | "back";
 
 // Peta anatomi full-body yang bisa diketuk, dari artwork SVG referensi
-// (varian male/female sesuai gender onboarding, sisi depan/belakang).
-// Fill datar tanpa gradient — warna via useColors():
-// selected = accent (opacity 0.9), unselected = primary (opacity 0.4).
-// Elemen netral non-interaktif: siluet tangan, elips kepala (dari outline
-// kepala grup body), dan lingkaran filler sendi penjembatani celah lutut.
-// Zona otot selalu digambar terakhir agar menutupi tepi filler/kepala.
-// Pola interaksi mengikuti BodyMap: handler langsung di Path (tanpa wrapper
-// G) agar konsisten di native dan web.
 export function AnatomyMap({
   gender,
   side,
@@ -29,7 +22,7 @@ export function AnatomyMap({
   gender: AnatomyGender;
   side: AnatomySide;
   selected: MuscleId[];
-  language: 'id' | 'en';
+  language: "id" | "en";
   onToggle: (id: MuscleId) => void;
 }) {
   const colors = useColors();
@@ -38,20 +31,28 @@ export function AnatomyMap({
   const labelFor = (id: MuscleId) => {
     const metadata = MUSCLES.find((muscle) => muscle.id === id);
     if (!metadata) return id;
-    return language === 'id' ? metadata.label : metadata.englishLabel;
+    return language === "id" ? metadata.label : metadata.englishLabel;
   };
 
   return (
     <View
       style={styles.mapWrap}
-      accessibilityLabel={side === 'front' ? 'Peta otot bagian depan' : 'Peta otot bagian belakang'}
+      accessibilityLabel={
+        side === "front"
+          ? "Peta otot bagian depan"
+          : "Peta otot bagian belakang"
+      }
     >
       <Svg
         viewBox={ANATOMY_VIEWBOX}
         width="100%"
         height={430}
-        accessible
-        accessibilityLabel={side === 'front' ? 'Siluet depan yang dapat dipilih' : 'Siluet belakang yang dapat dipilih'}
+        {...svgA11yProps()}
+        accessibilityLabel={
+          side === "front"
+            ? "Siluet depan yang dapat dipilih"
+            : "Siluet belakang yang dapat dipilih"
+        }
       >
         {/* Siluet netral: tangan (ghost, konsisten dengan zona tak dipilih) */}
         {variant.basePaths.map((d, index) => (
@@ -64,18 +65,7 @@ export function AnatomyMap({
             strokeWidth={1.5}
           />
         ))}
-        {/* Kepala + filler sendi: netral, non-interaktif, di bawah zona otot */}
-        {variant.head ? (
-          <Ellipse
-            cx={variant.head.cx}
-            cy={variant.head.cy}
-            rx={variant.head.rx}
-            ry={variant.head.ry}
-            fill={colors.secondary}
-            stroke={colors.border}
-            strokeWidth={2}
-          />
-        ) : null}
+        {/* Filler sendi lutut: netral, non-interaktif, di bawah zona otot */}
         {variant.fillers.map((filler, index) => (
           <Circle
             key={`filler-${index}`}
@@ -125,9 +115,8 @@ export function AnatomyMap({
               fillOpacity={isSelected ? 0.9 : 0.4}
               stroke={isSelected ? colors.primary : colors.background}
               strokeWidth={isSelected ? 2.5 : 1.5}
-              transform={zone.dx ? `translate(${zone.dx}, 0)` : undefined}
-              onPress={() => onToggle(zone.id)}
-              accessible
+              {...svgTapProps(() => onToggle(zone.id))}
+              {...svgA11yProps()}
               accessibilityLabel={stateLabel}
               testID={`anatomy-zone-${zone.id}`}
             />
@@ -140,10 +129,10 @@ export function AnatomyMap({
 
 const styles = StyleSheet.create({
   mapWrap: {
-    width: '100%',
+    width: "100%",
     height: 430,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
 });
